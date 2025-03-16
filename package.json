@@ -4,13 +4,12 @@
   "type": "module",
   "main": "index.js",
   "license": "MIT",
-  "author": "William5553 <contact@williamk.ga>",
+  "author": "William Kang <william@wkang.ca>",
   "description": "discord bot",
-  "repository": "github:William5553/quinton",
+  "repository": "github:wkangg/quinton",
   "packageManager": "pnpm@8.6.10",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --trace-warnings -r dotenv/config index.js",
+    "start": "bun run index.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
   },
@@ -22,27 +21,28 @@
     "discord-js"
   ],
   "engines": {
-    "node": ">=16.9"
+    "node": ">=22"
   },
   "dependencies": {
     "@william5553/translate-google-api": "^3.1.0",
-    "bufferutil": "^4.0.7",
-    "chalk": "^5.3.0",
-    "discord.js": "^14.11.0",
-    "dotenv": "^16.3.1",
-    "genius-lyrics": "^4.4.3",
+    "bufferutil": "^4.0.9",
+    "chalk": "^5.4.1",
+    "discord.js": "^14.18.0",
+    "genius-lyrics": "^4.4.7",
     "node-fetch": "^3.3.2",
-    "utf-8-validate": "^6.0.3",
-    "zlib-sync": "^0.1.8"
+    "utf-8-validate": "^6.0.5",
+    "zlib-sync": "^0.1.9"
   },
   "bugs": {
-    "url": "https://github.com/William5553/quinton/issues"
+    "url": "https://github.com/wkangg/quinton/issues"
   },
-  "homepage": "https://github.com/William5553/quinton",
+  "homepage": "https://github.com/wkangg/quinton",
   "devDependencies": {
-    "eslint": "8.42.0",
-    "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-n": "16.0.1",
-    "eslint-plugin-unicorn": "47.0.0"
+    "@eslint/js": "^9.21.0",
+    "@stylistic/eslint-plugin": "^4.2.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-n": "^17.16.2",
+    "eslint-plugin-unicorn": "^57.0.0",
+    "globals": "^16.0.0"
   }
 }

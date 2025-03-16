@@ -1,5 +1,5 @@
-name: lint
-on: [push, pull_request]
+name: Lint
+on: [push]
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
@@ -8,27 +8,17 @@ jobs:
     name: ESLint
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [ 16, 17, 18, 19 ]
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-         version: 8.6.10
+        uses: actions/checkout@v4
          
-      - name: Install Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Set up bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+         bun-version: latest
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Run ESLint
-        run: pnpm lint
+        run: bun run lint

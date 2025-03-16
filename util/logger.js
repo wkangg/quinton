@@ -2,28 +2,28 @@ import { inspect } from 'node:util';
 import chalk from 'chalk';
 
 export const log = (content, type = 'log') => {
-  if (typeof content !== 'string')
-    content = inspect(content, { depth: 2 });
+    if (typeof content !== 'string')
+        content = inspect(content, { depth: 2 });
 
-  switch (type) {
-    case 'log': 
-      return console.log(`${chalk.bgBlue(type.toUpperCase())} ${content}`);
-    
-    case 'warn': 
-      return console.log(`${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
-    
-    case 'error':
-      return console.log(`${chalk.bgRed(type.toUpperCase())} ${content}`);
-    
-    case 'debug':
-      return console.log(`${chalk.green(type.toUpperCase())} ${content}`);
-    
-    case 'ready':
-      return console.log(`${chalk.black.bgGreen(type.toUpperCase())} ${content}`);
-    
-    default:
-      throw new TypeError('Logger type must be either warn, debug, log, ready, or error.');
-  }
+    switch (type) {
+        case 'log':
+            return console.log(`${chalk.bgBlue(type.toUpperCase())} ${content}`);
+
+        case 'warn':
+            return console.log(`${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
+
+        case 'error':
+            return console.log(`${chalk.bgRed(type.toUpperCase())} ${content}`);
+
+        case 'debug':
+            return console.log(`${chalk.green(type.toUpperCase())} ${content}`);
+
+        case 'ready':
+            return console.log(`${chalk.black.bgGreen(type.toUpperCase())} ${content}`);
+
+        default:
+            throw new TypeError('Logger type must be either warn, debug, log, ready, or error.');
+    }
 };
 
 export const error = (...args) => log(...args, 'error');
