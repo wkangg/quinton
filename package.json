@@ -7,7 +7,7 @@
   "author": "William Kang <william@wkang.ca>",
   "description": "discord bot",
   "repository": "github:wkangg/quinton",
-  "packageManager": "pnpm@8.6.10",
+  "packageManager": "pnpm@8.15.9",
   "scripts": {
     "start": "bun run index.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
