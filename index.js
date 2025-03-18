@@ -1,5 +1,5 @@
 import { readdir } from 'node:fs';
-import { Client, GatewayIntentBits, Partials, Collection } from 'discord.js';
+import { Client, GatewayIntentBits, Partials, Collection, ActivityType } from 'discord.js';
 
 import * as logger from './util/logger.js';
 
@@ -12,8 +12,7 @@ const client = new Client({
         status: 'online',
         activities: [{
             name: '/isittuesday',
-            type: 'LISTENING',
-            url: 'https://www.github.com/wkangg/quinton'
+            type: ActivityType.Listening
         }]
     }
 });
