@@ -29,8 +29,7 @@
     "discord.js": "^14.18.0",
     "genius-lyrics": "^4.4.7",
     "node-fetch": "^3.3.2",
-    "utf-8-validate": "^6.0.5",
-    "zlib-sync": "^0.1.9"
+    "utf-8-validate": "^6.0.5"
   },
   "bugs": {
     "url": "https://github.com/wkangg/quinton/issues"
