@@ -27,9 +27,7 @@
     "bufferutil": "^4.0.9",
     "chalk": "^5.4.1",
     "discord.js": "^14.18.0",
-    "genius-lyrics": "^4.4.7",
-    "node-fetch": "^3.3.2",
-    "utf-8-validate": "^6.0.5"
+    "genius-lyrics": "^4.4.7"
   },
   "bugs": {
     "url": "https://github.com/wkangg/quinton/issues"

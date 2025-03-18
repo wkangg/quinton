@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { clamp } from '../util/Util.js';
 
