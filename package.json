@@ -23,7 +23,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@william5553/translate-google-api": "^3.1.0",
+    "@william5553/translate-google-api": "^3.2.0",
     "chalk": "^5.4.1",
     "discord.js": "^14.18.0",
     "genius-lyrics": "^4.4.7"
@@ -33,11 +33,11 @@
   },
   "homepage": "https://github.com/wkangg/quinton",
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
+    "@eslint/js": "^9.23.0",
     "@stylistic/eslint-plugin": "^4.2.0",
-    "eslint": "^9.21.0",
-    "eslint-plugin-n": "^17.16.2",
-    "eslint-plugin-unicorn": "^57.0.0",
+    "eslint": "^9.23.0",
+    "eslint-plugin-n": "^17.17.0",
+    "eslint-plugin-unicorn": "^58.0.0",
     "globals": "^16.0.0"
   }
 }
