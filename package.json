@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@william5553/translate-google-api": "^3.2.0",
-    "chalk": "^5.6.2",
     "discord.js": "^14.26.2",
     "genius-lyrics": "^4.4.7"
   },
