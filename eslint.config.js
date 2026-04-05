@@ -1,7 +1,5 @@
 // @ts-check
 /* eslint-disable n/no-unpublished-import */
-import globals from 'globals';
-
 import eslint from '@eslint/js';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import nodePlugin from 'eslint-plugin-n';
@@ -15,11 +13,6 @@ export default [
     {
         plugins: {
             '@stylistic': stylistic
-        },
-        languageOptions: {
-            globals: {
-                ...globals.node
-            }
         },
         rules: {
             '@typescript-eslint/no-unused-expressions': 'off',
