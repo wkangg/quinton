@@ -3,7 +3,7 @@ import { version, Routes, REST } from 'discord.js';
 
 const rest = new REST({ version: '10' }).setToken(process.env.token);
 
-const ready = async client => {
+export default async function ready(client) {
     rest
         .put(Routes.applicationCommands(client.user.id), { body: client.commands.map(c => c.config).filter(c => c.enabled) })
         .then(data => client.logger.log(`Registered ${data.length} commands!`))
@@ -20,6 +20,4 @@ const ready = async client => {
         client.application = await client.application.fetch();
         client.application.team ? client.owners.push(...client.application.team.members.keys()) : client.owners.push(client.application.owner.id);
     }, 60_000);
-};
-
-export default ready;
+}

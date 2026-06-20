@@ -42,17 +42,18 @@ export const execute = async (client, interaction) => {
 
     const embeds = [];
 
-    for (const m of splitMessage(lyrics, { maxLength: 3700 })) {
-        if (embeds.length < 10) {
-            const embed = new EmbedBuilder()
-                .setDescription(m)
-                .setColor('#F8AA2A');
+    const lyricParts = splitMessage(lyrics, { maxLength: 3700 });
+    for (const m of lyricParts) {
+        if (embeds.length >= 10) continue;
 
-            if (embeds.length === 0)
-                embed.setTitle(song.fullTitle);
+        const embed = new EmbedBuilder()
+            .setDescription(m)
+            .setColor('#F8AA2A');
 
-            embeds.push(embed);
-        }
+        if (embeds.length === 0)
+            embed.setTitle(song.fullTitle);
+
+        embeds.push(embed);
     }
     interaction.editReply({ embeds });
 };

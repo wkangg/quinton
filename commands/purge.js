@@ -34,7 +34,12 @@ export const execute = async (client, interaction) => {
     interaction.channel.messages
         .fetch({ limit: 100 })
         .then(messages => {
-            messages = interaction.options.getMember('user') ? [...messages.filter(m => m.author.id === interaction.options.getMember('user').id).keys()].slice(0, interaction.options.getInteger('amount')) : [...messages.keys()].slice(0, interaction.options.getInteger('amount'));
+            messages = (interaction.options.getMember('user')
+                ? messages.filter(m => m.author.id === interaction.options.getMember('user').id)
+                : messages)
+                .keys()
+                .toArray()
+                .slice(0, interaction.options.getInteger('amount'));
             return interaction.channel.bulkDelete(messages, true);
         })
         .then(messages => interaction.editReply({ content: `Deleted ${messages.size} messages`, ephemeral: true }));

@@ -1,6 +1,6 @@
 import { EmbedBuilder } from 'discord.js';
 
-const interactionCreate = async (client, interaction) => {
+export default async function interactionCreate(client, interaction) {
     if (!interaction.isChatInputCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
@@ -19,11 +19,9 @@ const interactionCreate = async (client, interaction) => {
                 .setURL('https://github.com/wkangg/quinton/issues')
                 .addFields(
                     { name: '**Command**', value: interaction.commandName, inline: true },
-                    { name: '**Options**', value: `${JSON.stringify(interaction.options.data, { depth: 2 })}` }
+                    { name: '**Options**', value: JSON.stringify(interaction.options.data, null, 2) }
                 )
                 .setDescription(`**Stack Trace:**\n\`\`\`${error.stack ?? error}\`\`\``)
         ] });
     }
-};
-
-export default interactionCreate;
+}

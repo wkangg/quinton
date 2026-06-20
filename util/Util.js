@@ -7,12 +7,14 @@ export const require = createRequire(import.meta.url);
 export const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 export const splitMessage = (content, options = {}) => {
     const maxLength = options.maxLength ?? 2000;
+    if (content.length <= maxLength) return [content];
+
     const char = options.char ?? '\n';
     const prepend = options.prepend ?? '';
     const append = options.append ?? '';
-    if (content.length <= maxLength) return [content];
     const splitText = content.split(char);
     if (splitText.some(piece => piece.length > maxLength)) throw new RangeError('SPLIT_MAX_LEN');
+
     const messages = [];
     let msg = '';
     for (const piece of splitText) {
@@ -22,6 +24,7 @@ export const splitMessage = (content, options = {}) => {
         }
         msg += (msg && piece !== '' ? char : '') + piece;
     }
+
     return [...messages, prepend + msg + append];
 };
 
@@ -42,9 +45,8 @@ export const confirm = async (interaction, author, time = 30_000) => {
         interaction.editReply({ components: [row] });
     else
         interaction = await interaction.channel.send({ content: 'Are you sure?', components: [row] });
-    const filter = i => i.user.id === author.id;
     try {
-        const buttonInteraction = await interaction.channel.awaitMessageComponent({ filter, time });
+        const buttonInteraction = await interaction.channel.awaitMessageComponent({ filter: i => i.user.id === author.id, time });
         if (buttonInteraction.customId === 'confirm') {
             await buttonInteraction.reply({ content: 'Confirmed.', ephemeral: true });
             interaction.editReply({ components: [] });

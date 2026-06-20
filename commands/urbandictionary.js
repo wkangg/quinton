@@ -27,7 +27,7 @@ export const execute = async (client, interaction) => {
     const query = interaction.options.getString('query');
     const result = interaction.options.getInteger('result');
 
-    fetch(`http://api.urbandictionary.com/v0/define?term=${query}`)
+    fetch(`https://api.urbandictionary.com/v0/define?term=${query}`)
         .then(res => res.json())
         .then(body => {
             if (body.list.length === 0) return interaction.editReply('Could not find any results');
