@@ -35,6 +35,6 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "eslint": "^10.5.0",
     "eslint-plugin-n": "^18.1.0",
-    "eslint-plugin-unicorn": "^68.0.0"
+    "eslint-plugin-unicorn": "^71.0.0"
   }
 }
