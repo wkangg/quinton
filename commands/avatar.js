@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from 'discord.js';
+import { ApplicationCommandOptionType, InteractionContextType } from 'discord.js';
 
 export const config = {
     name: 'avatar',
@@ -11,6 +11,11 @@ export const config = {
             type: ApplicationCommandOptionType.User,
             required: false
         }
+    ],
+    contexts: [
+        InteractionContextType.Guild,
+        InteractionContextType.BotDM,
+        InteractionContextType.PrivateChannel
     ]
 };
 

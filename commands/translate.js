@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
+import { ApplicationCommandOptionType, EmbedBuilder, InteractionContextType } from 'discord.js';
 import { translate, isSupported, langs, getCode } from '@william5553/translate-google-api';
 
 export const config = {
@@ -24,6 +24,11 @@ export const config = {
             type: ApplicationCommandOptionType.String,
             required: false
         }
+    ],
+    contexts: [
+        InteractionContextType.Guild,
+        InteractionContextType.BotDM,
+        InteractionContextType.PrivateChannel
     ]
 }; // TODO: https://discordjs.guide/slash-commands/autocomplete.html#enabling-autocomplete
 

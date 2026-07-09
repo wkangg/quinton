@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
+import { ApplicationCommandOptionType, EmbedBuilder, InteractionContextType } from 'discord.js';
 import { clamp } from '../util/Util.js';
 
 export const config = {
@@ -18,6 +18,11 @@ export const config = {
             type: ApplicationCommandOptionType.Integer,
             required: false
         }
+    ],
+    contexts: [
+        InteractionContextType.Guild,
+        InteractionContextType.BotDM,
+        InteractionContextType.PrivateChannel
     ]
 };
 

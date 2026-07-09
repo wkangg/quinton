@@ -1,10 +1,9 @@
-import { ApplicationCommandOptionType, PermissionsBitField } from 'discord.js';
+import { ApplicationCommandOptionType, PermissionsBitField, InteractionContextType } from 'discord.js';
 
 export const config = {
     name: 'purge',
     description: 'Deletes the specified amount of messages.',
     enabled: true,
-    dm_permission: false,
     default_member_permissions: PermissionsBitField.Flags.ManageMessages.toString(),
     options: [
         {
@@ -21,6 +20,9 @@ export const config = {
             type: ApplicationCommandOptionType.User,
             required: false
         }
+    ],
+    contexts: [
+        InteractionContextType.Guild
     ]
 };
 

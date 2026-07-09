@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from 'discord.js';
+import { ApplicationCommandOptionType, InteractionContextType } from 'discord.js';
 
 const wordleStart = Date.UTC(2021, 5, 19);
 const day = 86_400_000;
@@ -50,6 +50,11 @@ export const config = {
             required: false,
             min_value: 1
         }
+    ],
+    contexts: [
+        InteractionContextType.Guild,
+        InteractionContextType.BotDM,
+        InteractionContextType.PrivateChannel
     ]
 };
 

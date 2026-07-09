@@ -1,9 +1,14 @@
-import { EmbedBuilder, OAuth2Scopes, PermissionsBitField } from 'discord.js';
+import { EmbedBuilder, OAuth2Scopes, PermissionsBitField, InteractionContextType } from 'discord.js';
 
 export const config = {
     name: 'invite',
     description: 'Sends an invite link for the bot',
-    enabled: true
+    enabled: true,
+    contexts: [
+        InteractionContextType.Guild,
+        InteractionContextType.BotDM,
+        InteractionContextType.PrivateChannel
+    ]
 };
 
 export const execute = async (client, interaction) => {

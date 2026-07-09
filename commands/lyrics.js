@@ -1,4 +1,4 @@
-import { EmbedBuilder, ApplicationCommandOptionType } from 'discord.js';
+import { EmbedBuilder, ApplicationCommandOptionType, InteractionContextType } from 'discord.js';
 import { Client } from 'genius-lyrics';
 import { splitMessage, clamp } from '../util/Util.js';
 
@@ -21,6 +21,11 @@ export const config = {
             type: ApplicationCommandOptionType.Integer,
             required: false
         }
+    ],
+    contexts: [
+        InteractionContextType.Guild,
+        InteractionContextType.BotDM,
+        InteractionContextType.PrivateChannel
     ]
 };
 

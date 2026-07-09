@@ -1,11 +1,16 @@
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, InteractionContextType } from 'discord.js';
 import { randomItem, require } from '../util/Util.js';
 const options = require('../assets/ping.json');
 
 export const config = {
     name: 'ping',
     description: "Checks the bot's latency",
-    enabled: true
+    enabled: true,
+    contexts: [
+        InteractionContextType.Guild,
+        InteractionContextType.BotDM,
+        InteractionContextType.PrivateChannel
+    ]
 };
 
 export const execute = async (client, interaction) =>
