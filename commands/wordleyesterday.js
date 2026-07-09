@@ -22,9 +22,9 @@ const yesterday = () => {
     return new Date(Date.UTC(year, month - 1, date - 1));
 };
 
-const dateFromWordleNumber = number => new Date(wordleStart + (number - 1) * day);
+const dateFromWordleNumber = number => new Date(wordleStart + number * day);
 
-const wordleNumberFromDate = date => Math.floor((date.getTime() - wordleStart) / day) + 1;
+const wordleNumberFromDate = date => Math.floor((date.getTime() - wordleStart) / day);
 
 const fetchWordle = async date => {
     const response = await fetch(`${wordleApiBase}/${formatDate(date)}.json`);
@@ -36,7 +36,7 @@ const fetchWordle = async date => {
 };
 
 const wordleNumberFromData = (data, date) =>
-    Number.isSafeInteger(data.days_since_launch) ? data.days_since_launch + 1 : wordleNumberFromDate(date);
+    Number.isSafeInteger(data.days_since_launch) ? data.days_since_launch : wordleNumberFromDate(date);
 
 export const config = {
     name: 'wordleyesterday',
