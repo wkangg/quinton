@@ -1,8 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType } from 'discord.js';
 
 const wordleStart = Date.UTC(2021, 5, 19);
-const day = 86_400_000;
-const wordleApiBase = 'https://www.nytimes.com/svc/wordle/v2';
 
 const formatDate = date => date.toISOString().slice(0, 10);
 
@@ -22,12 +20,11 @@ const yesterday = () => {
     return new Date(Date.UTC(year, month - 1, date - 1));
 };
 
-const dateFromWordleNumber = number => new Date(wordleStart + number * day);
-
-const wordleNumberFromDate = date => Math.floor((date.getTime() - wordleStart) / day);
+const dateFromWordleNumber = number => new Date(wordleStart + number * 86_400_000);
+const wordleNumberFromDate = date => Math.floor((date.getTime() - wordleStart) / 86_400_000);
 
 const fetchWordle = async date => {
-    const response = await fetch(`${wordleApiBase}/${formatDate(date)}.json`);
+    const response = await fetch(`https://www.nytimes.com/svc/wordle/v2/${formatDate(date)}.json`);
 
     if (!response.ok)
         throw new Error(`NYT returned ${response.status} for ${formatDate(date)}`);
