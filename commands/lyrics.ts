@@ -36,8 +36,7 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
     const query = interaction.options.getString('query')!;
     const result = interaction.options.getInteger('result');
 
-    let lyrics;
-    let song;
+    let lyrics, song;
     try {
         const search = await GClient.songs.search(query, { sanitizeQuery: true });
         song = search[result ? clamp(result - 1, 0, search.length - 1) : 0]!;
