@@ -1,12 +1,16 @@
 import { ApplicationCommandOptionType, InteractionContextType } from 'discord.js';
+import type { CommandConfig, CommandModule } from '../types.ts';
+
+type WordleData = {
+    days_since_launch?: number
+    solution?: string
+};
 
 const wordleStart = Date.UTC(2021, 5, 19);
-const day = 86_400_000;
-const wordleApiBase = 'https://www.nytimes.com/svc/wordle/v2';
 
-const formatDate = date => date.toISOString().slice(0, 10);
+const formatDate = (date: Date): string => date.toISOString().slice(0, 10);
 
-const yesterday = () => {
+const yesterday = (): Date => {
     const formatter = new Intl.DateTimeFormat('en-CA', {
         timeZone: 'America/Toronto',
         year: 'numeric',
@@ -22,21 +26,20 @@ const yesterday = () => {
     return new Date(Date.UTC(year, month - 1, date - 1));
 };
 
-const dateFromWordleNumber = number => new Date(wordleStart + number * day);
+const dateFromWordleNumber = (number: number): Date => new Date(wordleStart + number * 86_400_000);
+const wordleNumberFromDate = (date: Date): number => Math.floor((date.getTime() - wordleStart) / 86_400_000);
 
-const wordleNumberFromDate = date => Math.floor((date.getTime() - wordleStart) / day);
-
-const fetchWordle = async date => {
-    const response = await fetch(`${wordleApiBase}/${formatDate(date)}.json`);
+const fetchWordle = async (date: Date): Promise<WordleData> => {
+    const response = await fetch(`https://www.nytimes.com/svc/wordle/v2/${formatDate(date)}.json`);
 
     if (!response.ok)
         throw new Error(`NYT returned ${response.status} for ${formatDate(date)}`);
 
-    return response.json();
+    return response.json() as Promise<WordleData>;
 };
 
-const wordleNumberFromData = (data, date) =>
-    Number.isSafeInteger(data.days_since_launch) ? data.days_since_launch : wordleNumberFromDate(date);
+const wordleNumberFromData = (data: WordleData, date: Date): number =>
+    Number.isSafeInteger(data.days_since_launch) ? data.days_since_launch! : wordleNumberFromDate(date);
 
 export const config = {
     name: 'wordleyesterday',
@@ -56,9 +59,9 @@ export const config = {
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
     ]
-};
+} satisfies CommandConfig;
 
-export const execute = async (client, interaction) => {
+export const execute: CommandModule['execute'] = async (_client, interaction) => {
     await interaction.deferReply();
 
     const number = interaction.options.getInteger('number');

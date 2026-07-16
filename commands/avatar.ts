@@ -1,4 +1,5 @@
 import { ApplicationCommandOptionType, InteractionContextType } from 'discord.js';
+import type { CommandConfig, CommandModule } from '../types.ts';
 
 export const config = {
     name: 'avatar',
@@ -17,9 +18,9 @@ export const config = {
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
     ]
-};
+} satisfies CommandConfig;
 
-export const execute = async (client, interaction) => {
+export const execute: CommandModule['execute'] = async (_client, interaction) => {
     const user = interaction.options.getUser('user') ?? interaction.user;
     const url = user.displayAvatarURL({ size: 4096 });
 

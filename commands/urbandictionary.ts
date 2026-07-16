@@ -1,5 +1,19 @@
 import { ApplicationCommandOptionType, EmbedBuilder, InteractionContextType } from 'discord.js';
-import { clamp } from '../util/Util.js';
+import type { CommandConfig, CommandModule } from '../types.ts';
+import { clamp } from '../util/Util.ts';
+
+type UrbanDictionaryResponse = {
+    list: Array<{
+        author: string
+        definition: string
+        example: string
+        permalink: string
+        thumbs_down: number
+        thumbs_up: number
+        word: string
+        written_on: string
+    }>
+};
 
 export const config = {
     name: 'urbandictionary',
@@ -24,20 +38,20 @@ export const config = {
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
     ]
-};
+} satisfies CommandConfig;
 
-export const execute = async (client, interaction) => {
+export const execute: CommandModule['execute'] = async (_client, interaction) => {
     await interaction.deferReply();
 
-    const query = interaction.options.getString('query');
+    const query = interaction.options.getString('query')!;
     const result = interaction.options.getInteger('result');
 
-    fetch(`https://api.urbandictionary.com/v0/define?term=${query}`)
-        .then(res => res.json())
+    return fetch(`https://api.urbandictionary.com/v0/define?term=${query}`)
+        .then(response => response.json() as Promise<UrbanDictionaryResponse>)
         .then(body => {
             if (body.list.length === 0) return interaction.editReply('Could not find any results');
 
-            const data = body.list[result ? clamp(result - 1, 0, body.list.length - 1) : 0];
+            const data = body.list[result ? clamp(result - 1, 0, body.list.length - 1) : 0]!;
 
             return interaction.editReply({ embeds: [
                 new EmbedBuilder()

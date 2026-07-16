@@ -1,6 +1,8 @@
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, MessageFlags } from 'discord.js';
+import type { Interaction } from 'discord.js';
+import type { BotClient } from '../types.ts';
 
-export default async function interactionCreate(client, interaction) {
+export default async function interactionCreate(client: BotClient, interaction: Interaction): Promise<unknown> {
     if (!interaction.isChatInputCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
@@ -8,10 +10,11 @@ export default async function interactionCreate(client, interaction) {
 
     try {
         await command.execute(client, interaction);
+        return;
     } catch (error) {
-        client.logger.error(error.stack ?? error);
+        client.logger.error(error instanceof Error ? error.stack ?? error.message : String(error));
 
-        return interaction[interaction.deferred ? 'editReply' : 'reply']({ ephemeral: true, embeds: [
+        const options = { embeds: [
             new EmbedBuilder()
                 .setColor('#FF0000')
                 .setTimestamp()
@@ -22,6 +25,10 @@ export default async function interactionCreate(client, interaction) {
                     { name: '**Options**', value: JSON.stringify(interaction.options.data, null, 2) }
                 )
                 .setDescription(`**Stack Trace:**\n\`\`\`${error.stack ?? error}\`\`\``)
-        ] });
+        ] };
+
+        return interaction.deferred || interaction.replied
+            ? interaction.editReply(options)
+            : interaction.reply({ ...options, flags: MessageFlags.Ephemeral });
     }
 }

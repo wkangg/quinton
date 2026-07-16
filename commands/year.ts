@@ -1,4 +1,5 @@
 import { InteractionContextType } from 'discord.js';
+import type { CommandConfig, CommandModule } from '../types.ts';
 
 export const config = {
     name: 'year',
@@ -9,9 +10,9 @@ export const config = {
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
     ]
-};
+} satisfies CommandConfig;
 
-export const execute = async (client, interaction) => {
+export const execute: CommandModule['execute'] = async (_client, interaction) => {
     const year = new Date().getFullYear();
-    interaction.reply({ content: `The current year is ${year}.` });
+    return interaction.reply({ content: `The current year is ${year}.` });
 };
