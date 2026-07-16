@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, PermissionsBitField, InteractionContextType } from 'discord.js';
+import { ApplicationCommandOptionType, PermissionsBitField, InteractionContextType, MessageFlags } from 'discord.js';
 import type { GuildMember, TextChannel } from 'discord.js';
 import type { CommandConfig, CommandModule } from '../types.ts';
 
@@ -29,7 +29,7 @@ export const config = {
 } satisfies CommandConfig;
 
 export const execute: CommandModule['execute'] = async (_client, interaction) => {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
     const me = interaction.guild!.members.me ?? await interaction.guild!.members.fetchMe();
 
@@ -48,5 +48,5 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
                 .slice(0, interaction.options.getInteger('amount')!);
             return channel.bulkDelete(messageIds, true);
         })
-        .then(messages => interaction.editReply({ content: `Deleted ${messages.size} messages`, ephemeral: true } as never));
+        .then(messages => interaction.editReply({ content: `Deleted ${messages.size} messages`, flags: MessageFlags.Ephemeral } as never));
 };

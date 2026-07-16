@@ -1,4 +1,4 @@
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, MessageFlags } from 'discord.js';
 import type { Interaction } from 'discord.js';
 import type { BotClient } from '../types.ts';
 
@@ -14,7 +14,7 @@ export default async function interactionCreate(client: BotClient, interaction: 
     } catch (error) {
         client.logger.error(error.stack ?? error);
 
-        const options = { ephemeral: true, embeds: [
+        const options = { embeds: [
             new EmbedBuilder()
                 .setColor('#FF0000')
                 .setTimestamp()
@@ -27,6 +27,8 @@ export default async function interactionCreate(client: BotClient, interaction: 
                 .setDescription(`**Stack Trace:**\n\`\`\`${error.stack ?? error}\`\`\``)
         ] };
 
-        return interaction.deferred ? interaction.editReply(options) : interaction.reply(options);
+        return interaction.deferred
+            ? interaction.editReply(options)
+            : interaction.reply({ ...options, flags: MessageFlags.Ephemeral });
     }
 }

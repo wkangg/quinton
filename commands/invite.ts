@@ -1,4 +1,4 @@
-import { EmbedBuilder, OAuth2Scopes, PermissionsBitField, InteractionContextType } from 'discord.js';
+import { EmbedBuilder, OAuth2Scopes, PermissionsBitField, InteractionContextType, MessageFlags } from 'discord.js';
 import type { GuildMember } from 'discord.js';
 import type { CommandConfig, CommandModule } from '../types.ts';
 
@@ -15,7 +15,7 @@ export const config = {
 
 export const execute: CommandModule['execute'] = async (client, interaction) => {
     if (!client.application!.botPublic && !client.owners.includes((interaction.member as GuildMember).id))
-        return interaction.reply({ content: 'The bot is private.', ephemeral: true });
+        return interaction.reply({ content: 'The bot is private.', flags: MessageFlags.Ephemeral });
     const url = client.generateInvite({ permissions: PermissionsBitField.All, scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands] });
     interaction.reply({ embeds: [
         new EmbedBuilder()
