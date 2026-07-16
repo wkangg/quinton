@@ -1,6 +1,6 @@
 import { inspect, styleText } from 'node:util';
 
-export const log = (content, type = 'log') => {
+export const log = (content: string, type: 'log' | 'warn' | 'error' | 'debug' | 'ready' = 'log') => {
     if (typeof content !== 'string')
         content = inspect(content, { depth: 2 });
 
@@ -12,9 +12,10 @@ export const log = (content, type = 'log') => {
             return console.log(`${styleText(['black', 'bgYellow'], type.toUpperCase())} ${content}`);
 
         case 'error':
-            return console.log(`${styleText('bgRed', type.toUpperCase())} ${content}`);
+            return console.error(`${styleText('bgRed', type.toUpperCase())} ${content}`);
 
         case 'debug':
+            if (process.env.NODE_ENV === 'production') return;
             return console.log(`${styleText('green', type.toUpperCase())} ${content}`);
 
         case 'ready':
@@ -25,8 +26,12 @@ export const log = (content, type = 'log') => {
     }
 };
 
-export const error = (...args) => log(...args, 'error');
-
-export const warn = (...args) => log(...args, 'warn');
-
-export const debug = (...args) => log(...args, 'debug');
+export const error = (content: string) => log(content, 'error');
+export const warn = (content: string) => log(content, 'warn');
+export const debug = (content: string) => log(content, 'debug');
+export default {
+    log,
+    error,
+    warn,
+    debug
+};

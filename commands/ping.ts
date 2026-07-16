@@ -1,6 +1,7 @@
 import { EmbedBuilder, InteractionContextType } from 'discord.js';
-import { randomItem, require } from '../util/Util.js';
-const options = require('../assets/ping.json');
+import type { CommandConfig, CommandModule } from '../types.ts';
+import { randomItem, require } from '../util/Util.ts';
+const options = require('../assets/ping.json') as string[];
 
 export const config = {
     name: 'ping',
@@ -11,9 +12,9 @@ export const config = {
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
     ]
-};
+} satisfies CommandConfig;
 
-export const execute = async (client, interaction) =>
+export const execute: CommandModule['execute'] = async (client, interaction) =>
     interaction
         .reply({ embeds: [
             new EmbedBuilder().setColor('#FFFFFF').setTitle('Pong!')

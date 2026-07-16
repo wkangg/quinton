@@ -1,4 +1,6 @@
 import { ApplicationCommandOptionType, PermissionsBitField, InteractionContextType } from 'discord.js';
+import type { GuildMember, TextChannel } from 'discord.js';
+import type { CommandConfig, CommandModule } from '../types.ts';
 
 export const config = {
     name: 'purge',
@@ -24,25 +26,27 @@ export const config = {
     contexts: [
         InteractionContextType.Guild
     ]
-};
+} satisfies CommandConfig;
 
-export const execute = async (client, interaction) => {
+export const execute: CommandModule['execute'] = async (_client, interaction) => {
     await interaction.deferReply({ ephemeral: true });
 
-    const me = interaction.guild.members.me ?? await interaction.guild.members.fetchMe();
+    const me = interaction.guild!.members.me ?? await interaction.guild!.members.fetchMe();
 
     if (!me.permissions.has(PermissionsBitField.Flags.ManageMessages))
         return interaction.editReply("I don't have the permission **MANAGE MESSAGES**");
-    interaction.channel.messages
+    const channel = interaction.channel as TextChannel;
+    return channel.messages
         .fetch({ limit: 100 })
         .then(messages => {
-            messages = (interaction.options.getMember('user')
-                ? messages.filter(m => m.author.id === interaction.options.getMember('user').id)
+            const member = interaction.options.getMember('user') as GuildMember | null;
+            const messageIds = (member
+                ? messages.filter(message => message.author.id === member.id)
                 : messages)
                 .keys()
                 .toArray()
-                .slice(0, interaction.options.getInteger('amount'));
-            return interaction.channel.bulkDelete(messages, true);
+                .slice(0, interaction.options.getInteger('amount')!);
+            return channel.bulkDelete(messageIds, true);
         })
-        .then(messages => interaction.editReply({ content: `Deleted ${messages.size} messages`, ephemeral: true }));
+        .then(messages => interaction.editReply({ content: `Deleted ${messages.size} messages`, ephemeral: true } as never));
 };

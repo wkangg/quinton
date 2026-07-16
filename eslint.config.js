@@ -1,6 +1,7 @@
 // @ts-check
 /* eslint-disable n/no-unpublished-import */
 import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import nodePlugin from 'eslint-plugin-n';
 import stylistic from '@stylistic/eslint-plugin';
@@ -9,10 +10,15 @@ export default [
     eslint.configs.recommended,
     nodePlugin.configs['flat/recommended'],
     eslintPluginUnicorn.configs.recommended,
+    ...tseslint.configs.recommended,
     stylistic.configs.recommended,
     {
         plugins: {
+            '@typescript-eslint': tseslint.plugin,
             '@stylistic': stylistic
+        },
+        languageOptions: {
+            parser: tseslint.parser
         },
         rules: {
             '@typescript-eslint/no-unused-expressions': 'off',
