@@ -5,7 +5,7 @@
     "": {
       "name": "quinton",
       "dependencies": {
-        "@william5553/translate-google-api": "^3.2.0",
+        "@william5553/translate-google-api": "^4.0.0",
         "discord.js": "^14.27.0",
         "genius-lyrics": "^4.4.7",
       },
@@ -102,7 +102,7 @@
 
     "@vladfrangu/async_event_emitter": ["@vladfrangu/async_event_emitter@2.4.6", "", {}, "sha512-RaI5qZo6D2CVS6sTHFKg1v5Ohq/+Bo2LZ5gzUEwZ/WkHhwtGTCB/sVLw8ijOkAUxasZ+WshN/Rzj4ywsABJ5ZA=="],
 
-    "@william5553/translate-google-api": ["@william5553/translate-google-api@3.2.0", "", {}, "sha512-nnDDTR6kQ+Ct34BQhDoJNxxEcvLJ2yDNqmqExST4FIfw3qQP+AtxX+WIZ0b80mIqSL7HZGl/UbW/NZ1GrMp70g=="],
+    "@william5553/translate-google-api": ["@william5553/translate-google-api@4.0.0", "", {}, "sha512-OHU+Hum6WbNYYU5M8Qv+9072zr7k/Eest16zXYCS6/vdAhuRsZ9rjm6Mzw5sP9YFt7TyCP2RG9kFBPULngR/Fg=="],
 
     "acorn": ["acorn@8.16.0", "", { "bin": { "acorn": "bin/acorn" } }, "sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw=="],
 
