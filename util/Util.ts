@@ -14,22 +14,22 @@ type SplitMessageOptions = {
 
 export const splitMessage = (content: string, options: SplitMessageOptions = {}): string[] => {
     const maxLength = options.maxLength ?? 2000;
-    if (content.length <= maxLength) return [content];
-
     const character = options.char ?? '\n';
     const prepend = options.prepend ?? '';
     const append = options.append ?? '';
-    const splitText = content.split(character);
-    if (splitText.some(piece => piece.length > maxLength)) throw new RangeError('SPLIT_MAX_LEN');
+    if ((prepend + content + append).length <= maxLength) return [prepend + content + append];
 
-    const messages = [];
+    const splitText = content.split(character);
+    if (splitText.some(piece => (prepend + piece + append).length > maxLength)) throw new RangeError('SPLIT_MAX_LEN');
+
+    const messages: string[] = [];
     let message = '';
     for (const piece of splitText) {
-        if (message && (message + character + piece + append).length > maxLength) {
+        if (message && (prepend + message + character + piece + append).length > maxLength) {
             messages.push(prepend + message + append);
             message = '';
         }
-        message += (message && piece !== '' ? character : '') + piece;
+        message += (message ? character : '') + piece;
     }
 
     return [...messages, prepend + message + append];

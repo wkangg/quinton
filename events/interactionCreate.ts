@@ -12,7 +12,7 @@ export default async function interactionCreate(client: BotClient, interaction: 
         await command.execute(client, interaction);
         return;
     } catch (error) {
-        client.logger.error(error.stack ?? error);
+        client.logger.error(error instanceof Error ? error.stack ?? error.message : String(error));
 
         const options = { embeds: [
             new EmbedBuilder()
@@ -27,7 +27,7 @@ export default async function interactionCreate(client: BotClient, interaction: 
                 .setDescription(`**Stack Trace:**\n\`\`\`${error.stack ?? error}\`\`\``)
         ] };
 
-        return interaction.deferred
+        return interaction.deferred || interaction.replied
             ? interaction.editReply(options)
             : interaction.reply({ ...options, flags: MessageFlags.Ephemeral });
     }

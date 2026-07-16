@@ -43,9 +43,7 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
             const messageIds = (member
                 ? messages.filter(message => message.author.id === member.id)
                 : messages)
-                .keys()
-                .toArray()
-                .slice(0, interaction.options.getInteger('amount')!);
+                .firstKey(interaction.options.getInteger('amount')!);
             return channel.bulkDelete(messageIds, true);
         })
         .then(messages => interaction.editReply({ content: `Deleted ${messages.size} messages`, flags: MessageFlags.Ephemeral } as never));

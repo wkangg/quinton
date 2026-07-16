@@ -1,5 +1,6 @@
 import { EmbedBuilder, ApplicationCommandOptionType, InteractionContextType } from 'discord.js';
 import { Client } from 'genius-lyrics';
+import type { Song } from 'genius-lyrics';
 import type { CommandConfig, CommandModule } from '../types.ts';
 import { splitMessage, clamp } from '../util/Util.ts';
 
@@ -36,13 +37,14 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
     const query = interaction.options.getString('query')!;
     const result = interaction.options.getInteger('result');
 
-    let lyrics, song;
+    let lyrics: string, song: Song;
     try {
         const search = await GClient.songs.search(query, { sanitizeQuery: true });
         song = search[result ? clamp(result - 1, 0, search.length - 1) : 0]!;
         lyrics = await song.lyrics(false);
     } catch (error) {
-        await interaction.editReply(`No lyrics found for ${query}${error.message === 'No result was found' ? '' : `: ${error.message ?? error}`}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        await interaction.editReply(`No lyrics found for ${query}${errorMessage === 'No result was found' ? '' : `: ${errorMessage}`}`);
         return 'No lyrics found';
     }
 
@@ -61,6 +63,5 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
 
         embeds.push(embed);
     }
-    interaction.editReply({ embeds });
-    return;
+    return interaction.editReply({ embeds });
 };

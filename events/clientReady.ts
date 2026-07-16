@@ -17,8 +17,12 @@ export default async function ready(client: BotClient): Promise<void> {
     client.owners.push('186620503123951617');
 
     setInterval(async () => {
-        client.owners = ['186620503123951617'];
-        client.application = await client.application!.fetch();
-        client.application.team ? client.owners.push(...client.application.team.members.keys()) : client.owners.push(client.application.owner!.id);
+        try {
+            client.owners = ['186620503123951617'];
+            client.application = await client.application!.fetch();
+            client.application.team ? client.owners.push(...client.application.team.members.keys()) : client.owners.push(client.application.owner!.id);
+        } catch (error) {
+            client.logger.error(error);
+        }
     }, 60_000);
 }

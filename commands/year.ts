@@ -14,5 +14,5 @@ export const config = {
 
 export const execute: CommandModule['execute'] = async (_client, interaction) => {
     const year = new Date().getFullYear();
-    interaction.reply({ content: `The current year is ${year}.` });
+    return interaction.reply({ content: `The current year is ${year}.` });
 };
