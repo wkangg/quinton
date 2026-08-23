@@ -34,8 +34,10 @@ const wordleNumberFromDate = (date: Date): number => Math.floor((date.getTime() 
 const fetchWordle = async (date: Date): Promise<WordleData> => {
     const response = await fetch(`https://www.nytimes.com/svc/wordle/v2/${formatDate(date)}.json`);
 
-    if (!response.ok)
-        throw new Error(`NYT returned ${response.status} for ${formatDate(date)}`);
+    if (!response.ok) {
+        const data = await response.json().catch(() => null) as WordleData | null;
+        return data ?? { errors: [response.status === 404 ? 'Not Found' : `NYT returned ${response.status}`] };
+    }
 
     return response.json() as Promise<WordleData>;
 };
