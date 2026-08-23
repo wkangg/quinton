@@ -2,6 +2,8 @@ import { ApplicationCommandOptionType, InteractionContextType } from 'discord.js
 import type { CommandConfig, CommandModule } from '../types.ts';
 
 type WordleData = {
+    status?: string
+    errors?: string[]
     days_since_launch?: number
     solution?: string
 };
@@ -66,18 +68,14 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
 
     const number = interaction.options.getInteger('number');
     const date = number ? dateFromWordleNumber(number) : yesterday();
-    const today = yesterday();
-    today.setUTCDate(today.getUTCDate() + 1);
-
-    if (date >= today) {
-        await interaction.editReply('That Wordle has not been released yet.');
-        return;
-    }
 
     const data = await fetchWordle(date);
 
     if (typeof data.solution !== 'string') {
-        await interaction.editReply(`Could not find a Wordle answer for ${formatDate(date)}.`);
+        const error = data.errors?.join(', ') ?? data.status ?? 'Unknown error';
+        await interaction.editReply(
+            data.errors?.includes('Not Found') ? 'That Wordle has not been released yet.' : `NYT returned an error: ${error}.`
+        );
         return;
     }
 
