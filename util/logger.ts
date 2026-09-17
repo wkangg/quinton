@@ -14,8 +14,7 @@ export const log = (content: unknown, type: 'log' | 'warn' | 'error' | 'debug' |
             return console.error(`${styleText('bgRed', type.toUpperCase())} ${message}`);
 
         case 'debug':
-            if (process.env.NODE_ENV === 'production') return;
-            return console.log(`${styleText('green', type.toUpperCase())} ${message}`);
+            return process.env.NODE_ENV === 'production' ? undefined : console.log(`${styleText('green', type.toUpperCase())} ${message}`);
 
         case 'ready':
             return console.log(`${styleText(['black', 'bgGreen'], type.toUpperCase())} ${message}`);
