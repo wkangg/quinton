@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
-  "author": "William Kang <william@wkang.ca>",
+  "author": "William Kang <me@wka.ng>",
   "description": "discord bot",
   "repository": "github:wkangg/quinton",
   "scripts": {
@@ -34,11 +34,11 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "@types/bun": "^1.4.0",
-    "eslint": "^10.9.0",
+    "@types/bun": "^1.4.2",
+    "eslint": "^10.10.0",
     "eslint-plugin-n": "^18.3.0",
-    "eslint-plugin-unicorn": "^73.0.0",
+    "eslint-plugin-unicorn": "^75.0.0",
     "typescript": "<7",
-    "typescript-eslint": "^8.67.0"
+    "typescript-eslint": "^8.70.0"
   }
 }
