@@ -1,5 +1,4 @@
 // @ts-check
-/* eslint-disable n/no-unpublished-import */
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
