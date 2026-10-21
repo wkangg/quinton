@@ -43,11 +43,14 @@ export const config = {
 export const execute: CommandModule['execute'] = async (_client, interaction) => {
     await interaction.deferReply();
 
-    const query = interaction.options.getString('query')!;
+    const query = interaction.options.getString('query', true);
     const result = interaction.options.getInteger('result');
 
-    return fetch(`https://api.urbandictionary.com/v0/define?term=${query}`)
-        .then(response => response.json() as Promise<UrbanDictionaryResponse>)
+    return fetch(`https://api.urbandictionary.com/v0/define?${new URLSearchParams({ term: query })}`)
+        .then(response => {
+            if (!response.ok) throw new Error(`Urban Dictionary returned ${response.status}`);
+            return response.json() as Promise<UrbanDictionaryResponse>;
+        })
         .then(body => {
             if (body.list.length === 0) return interaction.editReply('Could not find any results');
 
