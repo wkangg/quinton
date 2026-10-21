@@ -1,4 +1,4 @@
-import { EmbedBuilder, InteractionContextType } from 'discord.js';
+import { EmbedBuilder, InteractionContextType, ApplicationIntegrationType } from 'discord.js';
 import type { CommandConfig, CommandModule } from '../types.ts';
 import { randomItem } from '../util/Util.ts';
 import options from '../assets/ping.json' with { type: 'json' };
@@ -11,6 +11,10 @@ export const config = {
         InteractionContextType.Guild,
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
+    ],
+    integration_types: [
+        ApplicationIntegrationType.GuildInstall,
+        ApplicationIntegrationType.UserInstall
     ]
 } satisfies CommandConfig;
 

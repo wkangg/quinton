@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, EmbedBuilder, InteractionContextType } from 'discord.js';
+import { ApplicationCommandOptionType, EmbedBuilder, InteractionContextType, ApplicationIntegrationType } from 'discord.js';
 import { translate, isSupported, langs, getCode } from '@william5553/translate-google-api';
 import type { CommandConfig, CommandModule } from '../types.ts';
 
@@ -34,6 +34,10 @@ export const config = {
         InteractionContextType.Guild,
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
+    ],
+    integration_types: [
+        ApplicationIntegrationType.GuildInstall,
+        ApplicationIntegrationType.UserInstall
     ]
 } satisfies CommandConfig; // TODO: https://discordjs.guide/slash-commands/autocomplete.html#enabling-autocomplete
 

@@ -1,4 +1,4 @@
-import { EmbedBuilder, OAuth2Scopes, PermissionsBitField, InteractionContextType, MessageFlags } from 'discord.js';
+import { EmbedBuilder, OAuth2Scopes, PermissionsBitField, InteractionContextType, ApplicationIntegrationType, MessageFlags } from 'discord.js';
 import type { CommandConfig, CommandModule } from '../types.ts';
 
 export const config = {
@@ -9,6 +9,10 @@ export const config = {
         InteractionContextType.Guild,
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
+    ],
+    integration_types: [
+        ApplicationIntegrationType.GuildInstall,
+        ApplicationIntegrationType.UserInstall
     ]
 } satisfies CommandConfig;
 

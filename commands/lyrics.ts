@@ -1,4 +1,4 @@
-import { EmbedBuilder, ApplicationCommandOptionType, InteractionContextType } from 'discord.js';
+import { EmbedBuilder, ApplicationCommandOptionType, InteractionContextType, ApplicationIntegrationType } from 'discord.js';
 import { Client } from 'genius-lyrics';
 import type { Song } from 'genius-lyrics';
 import type { CommandConfig, CommandModule } from '../types.ts';
@@ -28,6 +28,10 @@ export const config = {
         InteractionContextType.Guild,
         InteractionContextType.BotDM,
         InteractionContextType.PrivateChannel
+    ],
+    integration_types: [
+        ApplicationIntegrationType.GuildInstall,
+        ApplicationIntegrationType.UserInstall
     ]
 } satisfies CommandConfig;
 
