@@ -19,8 +19,6 @@
         "resolveJsonModule": true,
         "resolvePackageJsonExports": true,
         "resolvePackageJsonImports": true,
-        "declaration": true,
-        "declarationMap": true,
         "noEmit": true,
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
@@ -28,8 +26,8 @@
         "isolatedModules": true,
         "lib": ["ESNext"],
         "target": "ESNext",
-        "types": ["bun-types"]
+        "types": ["bun"]
     },
-    "include": ["**/*.ts", "**/*.d.ts"],
+    "include": ["**/*.ts"],
     "exclude": ["node_modules"]
 }
