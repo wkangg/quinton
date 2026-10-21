@@ -19,5 +19,5 @@ export default async function ready(client: BotClient): Promise<void> {
 
     await refreshOwners(client);
 
-    setInterval(() => refreshOwners(client).catch(client.logger.error), 60_000);
+    setInterval(() => refreshOwners(client).catch(client.logger.error), 900_000);
 }
