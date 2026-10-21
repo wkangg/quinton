@@ -15,7 +15,7 @@ export default async function ready(client: BotClient): Promise<void> {
         .then(data => client.logger.log(`Registered ${data.length} commands!`))
         .catch(client.logger.error);
 
-    client.logger.log(`User: ${client.user!.tag} (${client.user!.id}) | ${client.commands.size} commands | Serving ${client.users.cache.size} users in ${client.guilds.cache.size} server${client.guilds.cache.size === 1 ? '' : 's'} | Node ${process.version} | Discord.js ${version}`, 'ready');
+    client.logger.log(`User: ${client.user!.tag} (${client.user!.id}) | ${client.commands.size} commands | Serving ${client.guilds.cache.reduce((total, guild) => total + guild.memberCount, 0)} users in ${client.guilds.cache.size} server${client.guilds.cache.size === 1 ? '' : 's'} | Node ${process.version} | Discord.js ${version}`, 'ready');
 
     await refreshOwners(client);
 

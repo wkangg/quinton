@@ -1,11 +1,13 @@
 import { readdir } from 'node:fs/promises';
-import { ActivityType, Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
+import { ActivityType, Client, Collection, GatewayIntentBits } from 'discord.js';
 import type { BotClient, CommandModule } from './types.ts';
 import * as logger from './util/logger.ts';
 
 const client = new Client({
-    intents: (Object.values(GatewayIntentBits) as number[]).reduce((accumulator, permission) => accumulator | permission, 0) ?? 32_767,
-    partials: [Partials.Channel],
+    // Only slash commands are used, so no message, member or presence events are needed
+    intents: [GatewayIntentBits.Guilds],
+    // intents: (Object.values(GatewayIntentBits) as number[]).reduce((accumulator, permission) => accumulator | permission, 0),
+    // partials: [Partials.Channel],
     allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
     waitGuildTimeout: 5000,
     presence: {
