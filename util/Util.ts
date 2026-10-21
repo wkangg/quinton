@@ -1,8 +1,5 @@
-import { createRequire } from 'node:module';
-
 export { setTimeout as wait } from 'node:timers/promises';
 export const randomItem = <T>(array: T[]): T => array[Math.floor(Math.random() * array.length)]!;
-export const require = createRequire(import.meta.url);
 export const clamp = (number: number, minimum: number, maximum: number): number => Math.min(Math.max(number, minimum), maximum);
 
 type SplitMessageOptions = {

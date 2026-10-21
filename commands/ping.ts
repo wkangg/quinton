@@ -1,7 +1,7 @@
 import { EmbedBuilder, InteractionContextType } from 'discord.js';
 import type { CommandConfig, CommandModule } from '../types.ts';
-import { randomItem, require } from '../util/Util.ts';
-const options = require('../assets/ping.json') as string[];
+import { randomItem } from '../util/Util.ts';
+import options from '../assets/ping.json' with { type: 'json' };
 
 export const config = {
     name: 'ping',
