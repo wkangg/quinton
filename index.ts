@@ -1,4 +1,5 @@
-import { readdir } from 'node:fs';
+import { readdir as readdirCallback } from 'node:fs';
+import { readdir } from 'node:fs/promises';
 import { ActivityType, Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import type { BotClient, CommandModule } from './types.ts';
 import * as logger from './util/logger.ts';
@@ -22,7 +23,7 @@ client.owners = [];
 client.commands = new Collection();
 client.logger = logger;
 
-readdir('./events/', async (error, files) => {
+readdirCallback('./events/', async (error, files) => {
     if (error) {
         logger.error(error.stack ?? error.message);
         return;
@@ -39,30 +40,34 @@ readdir('./events/', async (error, files) => {
     }
 });
 
-readdir('./commands/', async (error, files) => {
-    if (error) {
-        logger.error(error.stack ?? error.message);
-        return;
+// Load commands before logging in so clientReady registers the full set
+const commandFiles = await readdir('./commands/');
+logger.log(`Loading a total of ${commandFiles.length} commands.`);
+
+for (const file of commandFiles) {
+    if (!file.endsWith('.ts')) {
+        logger.warn(`File not ending with .ts found in commands folder: ${file}`);
+        continue;
     }
-    logger.log(`Loading a total of ${files.length} commands.`);
 
-    for (const file of files) {
-        if (!file.endsWith('.ts'))
-            return logger.warn(`File not ending with .ts found in commands folder: ${file}`);
+    const command = await import(`./commands/${file}`) as CommandModule;
 
-        const command = await import(`./commands/${file}`) as CommandModule;
-
-        if (command.config.enabled !== true)
-            return logger.warn(`${command.config.name} is disabled.`);
-        if (!command.config)
-            return logger.warn(`${command} failed to load as it is missing required command configuration`);
-        logger.log(`Loading Command: ${command.config.name}. 👌`);
-        if (command.config.name !== file.split('.', 1)[0])
-            return logger.warn(`File name ${command} has a different command name ${command.config.name}`);
-
-        client.commands.set(command.config.name, command);
+    if (!command.config) {
+        logger.warn(`${file} failed to load as it is missing required command configuration`);
+        continue;
     }
-});
+    if (command.config.enabled !== true) {
+        logger.warn(`${command.config.name} is disabled.`);
+        continue;
+    }
+    if (command.config.name !== file.split('.', 1)[0]) {
+        logger.warn(`File name ${file} has a different command name ${command.config.name}`);
+        continue;
+    }
+    logger.log(`Loading Command: ${command.config.name}. 👌`);
+
+    client.commands.set(command.config.name, command);
+}
 
 await client.login(process.env.token);
 
