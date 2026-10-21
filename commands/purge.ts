@@ -1,5 +1,4 @@
 import { ApplicationCommandOptionType, PermissionsBitField, InteractionContextType, MessageFlags } from 'discord.js';
-import type { GuildMember, TextChannel } from 'discord.js';
 import type { CommandConfig, CommandModule } from '../types.ts';
 
 export const config = {
@@ -31,20 +30,19 @@ export const config = {
 export const execute: CommandModule['execute'] = async (_client, interaction) => {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-    const me = interaction.guild!.members.me ?? await interaction.guild!.members.fetchMe();
+    if (!interaction.appPermissions.has([PermissionsBitField.Flags.ManageMessages, PermissionsBitField.Flags.ReadMessageHistory]))
+        return interaction.editReply('I need the **MANAGE MESSAGES** and **READ MESSAGE HISTORY** permissions in this channel');
 
-    if (!me.permissions.has(PermissionsBitField.Flags.ManageMessages))
-        return interaction.editReply("I don't have the permission **MANAGE MESSAGES**");
-    const channel = interaction.channel as TextChannel;
-    return channel.messages
-        .fetch({ limit: 100 })
-        .then(messages => {
-            const member = interaction.options.getMember('user') as GuildMember | null;
-            const messageIds = (member
-                ? messages.filter(message => message.author.id === member.id)
-                : messages)
-                .firstKey(interaction.options.getInteger('amount')!);
-            return channel.bulkDelete(messageIds, true);
-        })
-        .then(messages => interaction.editReply({ content: `Deleted ${messages.size} messages`, flags: MessageFlags.Ephemeral } as never));
+    const channel = interaction.channel;
+    if (!channel?.isTextBased() || channel.isDMBased())
+        return interaction.editReply('This command can only be used in server text channels');
+
+    // getUser rather than getMember: a member who left the server resolves to null, which would purge everyone
+    const user = interaction.options.getUser('user');
+    const messages = await channel.messages.fetch({ limit: 100 });
+    const messageIds = (user ? messages.filter(message => message.author.id === user.id) : messages)
+        .firstKey(interaction.options.getInteger('amount', true));
+    const deleted = await channel.bulkDelete(messageIds, true);
+
+    return interaction.editReply(`Deleted ${deleted.size} message${deleted.size === 1 ? '' : 's'}`);
 };
