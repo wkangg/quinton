@@ -18,9 +18,11 @@ const client = new Client({
 }) as BotClient;
 
 client.owners = [];
-
 client.commands = new Collection();
 client.logger = logger;
+
+process.on('uncaughtException', error => logger.error(`UNCAUGHT EXCEPTION:\n${error.stack ?? error}`));
+process.on('unhandledRejection', error => logger.error(`UNHANDLED REJECTION:\n${error instanceof Error ? error.stack ?? error : String(error)}`));
 
 const eventFiles = await readdir('./events/');
 logger.log(`Loading a total of ${eventFiles.length} events.`);
@@ -66,6 +68,3 @@ for (const file of commandFiles) {
 }
 
 await client.login(process.env.token);
-
-process.on('uncaughtException', error => client.logger.error(`UNCAUGHT EXCEPTION:\n${error.stack ?? error}`));
-process.on('unhandledRejection', error => client.logger.error(`UNHANDLED REJECTION:\n${error instanceof Error ? error.stack ?? error : String(error)}`));
