@@ -13,7 +13,9 @@ export const config = {
             name: 'text',
             description: 'The text to translate.',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
+            // Embed field values are limited to 1024 characters
+            max_length: 1024
         },
         {
             name: 'to',
@@ -57,7 +59,7 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
                     .setTitle('Translation')
                     .addFields(
                         { name: '**Input**', value: text, inline: true },
-                        { name: '**Text**', value: result.text, inline: true },
+                        { name: '**Text**', value: result.text.slice(0, 1024), inline: true },
                         { name: '\n', value: '\n' },
                         { name: '**From**', value: getLanguageName(result.from.language.iso), inline: true },
                         { name: '**To**', value: targetLanguageName, inline: true }
