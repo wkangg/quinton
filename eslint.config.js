@@ -13,13 +13,6 @@ export default [
     ...tseslint.configs.recommended,
     stylistic.configs.recommended,
     {
-        plugins: {
-            '@typescript-eslint': tseslint.plugin,
-            '@stylistic': stylistic
-        },
-        languageOptions: {
-            parser: tseslint.parser
-        },
         rules: {
             '@typescript-eslint/no-unused-expressions': 'off',
             'unicorn/prefer-string-replace-all': 'error',
