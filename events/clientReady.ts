@@ -1,8 +1,6 @@
 import { setInterval } from 'node:timers';
-import { version, Routes, REST, Team } from 'discord.js';
+import { version, Routes, Team } from 'discord.js';
 import type { BotClient } from '../types.ts';
-
-const rest = new REST({ version: '10' }).setToken(process.env.token!);
 
 const BOT_AUTHOR_ID = '186620503123951617';
 
@@ -12,7 +10,7 @@ const refreshOwners = async (client: BotClient): Promise<void> => {
 };
 
 export default async function ready(client: BotClient): Promise<void> {
-    (rest
+    (client.rest
         .put(Routes.applicationCommands(client.user!.id), { body: client.commands.map(command => command.config).filter(command => command.enabled) }) as Promise<unknown[]>)
         .then(data => client.logger.log(`Registered ${data.length} commands!`))
         .catch(client.logger.error);
