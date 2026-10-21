@@ -34,7 +34,7 @@ export const config = {
 export const execute: CommandModule['execute'] = async (_client, interaction) => {
     await interaction.deferReply();
 
-    const query = interaction.options.getString('query')!;
+    const query = interaction.options.getString('query', true);
     const result = interaction.options.getInteger('result');
 
     let lyrics: string, song: Song;
@@ -45,23 +45,13 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         await interaction.editReply(`No lyrics found for ${query}${errorMessage === 'No result was found' ? '' : `: ${errorMessage}`}`);
-        return 'No lyrics found';
+        return;
     }
 
-    const embeds = [];
+    // A message's embeds share a 6000 character limit, so each part is sent as its own message
+    const [first, ...rest] = splitMessage(lyrics, { maxLength: 3700 })
+        .map(part => new EmbedBuilder().setDescription(part).setColor('#F8AA2A'));
 
-    const lyricParts = splitMessage(lyrics, { maxLength: 3700 });
-    for (const message of lyricParts) {
-        if (embeds.length >= 10) continue;
-
-        const embed = new EmbedBuilder()
-            .setDescription(message)
-            .setColor('#F8AA2A');
-
-        if (embeds.length === 0)
-            embed.setTitle(song.fullTitle);
-
-        embeds.push(embed);
-    }
-    return interaction.editReply({ embeds });
+    await interaction.editReply({ embeds: [first!.setTitle(song.fullTitle)] });
+    for (const embed of rest) await interaction.followUp({ embeds: [embed] });
 };
