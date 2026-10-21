@@ -24,5 +24,5 @@ export const execute: CommandModule['execute'] = async (_client, interaction) =>
     const user = interaction.options.getUser('user') ?? interaction.user;
     const url = user.displayAvatarURL({ size: 4096 });
 
-    interaction.reply({ content: url });
+    return interaction.reply({ content: url });
 };
