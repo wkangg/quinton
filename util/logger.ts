@@ -8,7 +8,7 @@ export const log = (content: unknown, type: 'log' | 'warn' | 'error' | 'debug' |
             return console.log(`${styleText('bgBlue', type.toUpperCase())} ${message}`);
 
         case 'warn':
-            return console.log(`${styleText(['black', 'bgYellow'], type.toUpperCase())} ${message}`);
+            return console.warn(`${styleText(['black', 'bgYellow'], type.toUpperCase())} ${message}`);
 
         case 'error':
             return console.error(`${styleText('bgRed', type.toUpperCase())} ${message}`);
@@ -27,9 +27,3 @@ export const log = (content: unknown, type: 'log' | 'warn' | 'error' | 'debug' |
 export const error = (content: unknown) => log(content, 'error');
 export const warn = (content: unknown) => log(content, 'warn');
 export const debug = (content: unknown) => log(content, 'debug');
-export default {
-    log,
-    error,
-    warn,
-    debug
-};
