@@ -1,4 +1,3 @@
-import { readdir as readdirCallback } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { ActivityType, Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import type { BotClient, CommandModule } from './types.ts';
@@ -23,24 +22,21 @@ client.owners = [];
 client.commands = new Collection();
 client.logger = logger;
 
-readdirCallback('./events/', async (error, files) => {
-    if (error) {
-        logger.error(error.stack ?? error.message);
-        return;
-    }
-    logger.log(`Loading a total of ${files.length} events.`);
-    for (const file of files) {
-        if (!file.endsWith('.ts'))
-            return logger.warn(`File not ending with .ts found in events folder: ${file}`);
-        const eventName = file.split('.', 1)[0]!;
-        logger.log(`Loading Event: ${eventName}. 👌`);
-        const event = await import(`./events/${file}`) as { default: (client: BotClient, ...arguments_: unknown[]) => unknown };
-        // Bind the client to any event, before the existing arguments provided by the discord.js event
-        client.on(eventName, event.default.bind(undefined, client));
-    }
-});
+const eventFiles = await readdir('./events/');
+logger.log(`Loading a total of ${eventFiles.length} events.`);
 
-// Load commands before logging in so clientReady registers the full set
+for (const file of eventFiles) {
+    if (!file.endsWith('.ts')) {
+        logger.warn(`File not ending with .ts found in events folder: ${file}`);
+        continue;
+    }
+    const eventName = file.split('.', 1)[0]!;
+    logger.log(`Loading Event: ${eventName}. 👌`);
+    const event = await import(`./events/${file}`) as { default: (client: BotClient, ...arguments_: unknown[]) => unknown };
+    // Bind the client to any event, before the existing arguments provided by the discord.js event
+    client.on(eventName, event.default.bind(undefined, client));
+}
+
 const commandFiles = await readdir('./commands/');
 logger.log(`Loading a total of ${commandFiles.length} commands.`);
 
